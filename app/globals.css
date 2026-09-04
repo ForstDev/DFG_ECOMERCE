@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   DFG design tokens
+   Palette taken from dfgtruckparts.com: black nav, white product ground,
+   #EE2624 as the single accent. The brand red is kept at its exact value.
+   Theme is LIGHT-LOCKED on purpose: the 2.625 catalog photos are shot on
+   white, so a dark surface would need a white plate behind every image and
+   would fight the photography. Black is used as a brand block (header, hero,
+   footer), never as an alternate theme.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-ink: #0b0b0c;
+  --color-ink-soft: #33373d;
+  --color-ink-mute: #6b7076;
+  --color-paper: #ffffff;
+  --color-surface: #f5f5f6;
+  --color-surface-2: #ebebed;
+  --color-line: #e0e0e4;
+  --color-line-strong: #c8c8ce;
+  --color-red: #ee2624;
+  --color-red-deep: #c31b19;
+  --color-red-wash: #fdecec;
+
+  --font-display: var(--font-montserrat), "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-montserrat), "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --radius-none: 0px;
+}
+
+/* Shape lock: the whole product is square-cornered. Industrial, and it matches
+   the DFG site. No component introduces a radius of its own. */
+:root {
+  color-scheme: light;
+  --shell: 1440px;
+  --header-h: 68px;
+  --z-header: 40;
+  --z-drawer: 60;
+  --z-modal: 70;
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Lenis owns the scroll; it needs the html node to stay unclamped. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--color-red);
+  color: #fff;
+}
+
+/* Focus is visible everywhere. Red ring reads as brand and passes contrast on
+   both the white and the black surfaces. */
+:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+}
+
+@utility shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 3rem;
+  }
+}
+
+/* Small uppercase label. Used sparingly, see the eyebrow budget in the README. */
+@utility label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+@utility code-type {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Product photography sits on white, always contained, never cropped. */
+@utility photo-plate {
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------------------------
+   Hero entrance, in CSS rather than in JavaScript.
+
+   The headline is the most important text on the page and it must never depend
+   on a bundle arriving or on a frame loop starting: a masked line that fails to
+   animate stays translated out of its own clip and disappears. Declaring the
+   entrance as a keyframe inside a `no-preference` query means the resting state
+   is the visible one, so every failure mode degrades to plain readable text.
+--------------------------------------------------------------------------- */
+@keyframes dfg-mask-up {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes dfg-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anim-mask-up {
+    animation: dfg-mask-up 0.9s var(--ease-out-expo) both;
+  }
+  .anim-rise {
+    animation: dfg-rise 0.8s var(--ease-out-expo) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Scrollbar inside filter rails and drawers */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-line-strong);
+}
