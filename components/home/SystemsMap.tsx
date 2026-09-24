@@ -158,8 +158,14 @@ function SystemBlock({
             ))}
           </div>
 
-          {/* Mobile only: the tiles travel with their own system block. */}
-          <div className="mt-6 grid grid-cols-2 gap-px border border-line bg-line lg:hidden">
+          {/* Mobile and tablet: the tiles travel with their own system block.
+              Four columns from `sm` up, not two: at tablet widths (roughly
+              640-1023px, right below the desktop sticky-panel breakpoint) two
+              columns of aspect-square product photography turn into tiles
+              near 460px on a side. The photos are shot on white, so two rows
+              of that read as a blank white screen while scrolling, not as a
+              product grid. */}
+          <div className="mt-6 grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-4 lg:hidden">
             {system.products.map((p) => (
               <Link
                 key={p.slug}
@@ -170,7 +176,7 @@ function SystemBlock({
                   src={p.images[0]}
                   alt={p.name}
                   fill
-                  sizes="45vw"
+                  sizes="(min-width: 640px) 25vw, 45vw"
                   className="object-contain p-5"
                 />
               </Link>
