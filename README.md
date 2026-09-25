@@ -222,8 +222,11 @@ imagen y pelearía con la fotografía. El negro se usa como bloque de marca
 **Paleta.** Negro `#0b0b0c`, rojo `#EE2624` y gris `#33373D`, tomados de
 dfgtruckparts.com. Un solo acento en toda la aplicación.
 
-**Tipografía.** Montserrat, la que ya usa DFG. JetBrains Mono queda reservada
-para los números de parte, que son datos y quieren cifras tabulares.
+**Tipografía.** "DFG Now 2022", la fuente comercial ("Now", nueve pesos) que
+DFG aloja en su propio sitio y usa en toda su web. Los archivos se tomaron
+directo de dfgtruckparts.com y se sirven localmente en `public/fonts/dfg-now/`.
+JetBrains Mono queda reservada para los números de parte, que son datos y
+quieren cifras tabulares.
 
 **Esquinas rectas en todo.** Un único sistema de forma, industrial, coherente con
 la web actual de DFG.

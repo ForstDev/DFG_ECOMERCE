@@ -1,16 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-// Montserrat is the typeface dfgtruckparts.com already runs on. The mono face
-// is reserved for part numbers, which are data and want tabular figures.
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-montserrat",
+// The real DFG typeface, self-hosted the same way dfgtruckparts.com serves it:
+// a commercial "Now" family, nine weights, renamed "DFG Now 2022" in their own
+// CSS. Files were pulled from their own wp-content/uploads (fonts/dfg-now/),
+// so the proposal reads as the brand rather than as a look-alike.
+const dfgNow = localFont({
+  variable: "--font-now",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  src: [
+    { path: "../public/fonts/dfg-now/Now-Thin.woff2", weight: "100", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-ExtraLight.woff2", weight: "200", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-Light.woff2", weight: "300", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-SemiBold.woff2", weight: "600", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-Bold.woff2", weight: "700", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-ExtraBold.woff2", weight: "800", style: "normal" },
+    { path: "../public/fonts/dfg-now/Now-Black.woff2", weight: "900", style: "normal" },
+  ],
 });
 
+// Reserved for part numbers, which are data and want tabular figures.
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
@@ -36,7 +49,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={montserrat.variable + " " + jetbrains.variable}>
+    <html lang="es" className={dfgNow.variable + " " + jetbrains.variable}>
       <head>
         {/*
           Motion renders its `initial` values as inline styles on the server, so
